@@ -7,7 +7,7 @@ import { useToast } from "primevue/usetoast";
 import { ref, onMounted } from "vue";
 import Utils from "@/utils/";
 import { useApp } from "@/stores/app.js";
-import XLSX from "xlsx";
+import XLSX, { utils } from "xlsx";
 import DialogForm from "@/components/form/DialogForm.vue";
 const storeApp = useApp();
 
@@ -227,20 +227,38 @@ function ImportFile() {
         }
 
         if (key.search("C_") == 0) {
-          journal_head.push(key.split("C_")[1]);
+          var accountdetail = [];
+          accountdetail = Utils.selectAccount(key.split("C_")[1]);
+
+          journal_head.push(
+            accountdetail.length > 0 ? accountdetail[0].accountcode : key
+          );
           journal.push({
-            accountcode: key.split("C_")[1],
-            accountname: key.split("C_")[1],
+            accountcode:
+              accountdetail.length > 0 ? accountdetail[0].accountcode : key,
+            accountname:
+              accountdetail.length > 0
+                ? accountdetail[0].accountname
+                : key.split("C_")[1],
             debitamount: 0,
             creditamount: value,
           });
         }
 
         if (key.search("D_") == 0) {
-          journal_head.push(key.split("D_")[1]);
+          var accountdetail = [];
+          accountdetail = Utils.selectAccount(key.split("D_")[1]);
+
+          journal_head.push(
+            accountdetail.length > 0 ? accountdetail[0].accountcode : key
+          );
           journal.push({
-            accountcode: key.split("D_")[1],
-            accountname: key.split("D_")[1],
+            accountcode:
+              accountdetail.length > 0 ? accountdetail[0].accountcode : key,
+            accountname:
+              accountdetail.length > 0
+                ? accountdetail[0].accountname
+                : key.split("D_")[1],
             debitamount: value,
             creditamount: 0,
           });
@@ -253,7 +271,7 @@ function ImportFile() {
 
       //console.log(res);
       remove_duplicates(journal_head).forEach((data) => {
-       // console.log(data);
+        // console.log(data);
         if (res[data].length == 1) {
           import_daily_json.journaldetail.push({
             accountcode: res[data][0].accountcode,
@@ -338,6 +356,32 @@ function ImportFile() {
       }
 
       console.log(import_daily_json.journaldetail);
+
+      import_daily_json.journaldetail.forEach((ele) => {
+        if (
+          ele.accountcode.search("D_") == 0 ||
+          ele.accountcode.search("C_") == 0 ||
+          ele.accountcode == ""
+        ) {
+        
+          if (ele.accountname.search("_") > -1) {
+            error_msg.push({
+              name: "รายการบัญชีซ้ำ " + ele.accountname.replace("_", ""),
+              docno: import_daily_json.shopid,
+              tab: 1,
+            });
+          } else {
+            error_msg.push({
+              name:
+                "ไม่พบรายละเอียดรายการบัญชี " +
+                ele.accountname,
+              docno: import_daily_json.shopid,
+              tab: 1,
+            });
+          }
+        }
+      });
+
       var new_journaldetail = [];
       import_daily_json.journaldetail.forEach((ele) => {
         if (ele.creditamount != 0 || ele.debitamount != 0) {
@@ -642,16 +686,7 @@ function onClose() {
         >
           <h3>ไม่สามารถทำรายการได้ กรุณาตรวจสอบข้อมูล</h3>
           <div v-for="(data, index) in error_message" :key="index">
-            <p>
-              {{
-                data.tab == 1
-                  ? "ข้อมูลรายวัน "
-                  : data.tab == 2
-                  ? "ข้อมูลภาษี"
-                  : "ข้อมูลภาษีหัก ณ ที่จ่าย"
-              }}
-              : {{ data.name }} เอกสารเลขที่ : {{ data.docno }}
-            </p>
+            <p>{{ data.name }} villageprojectno : {{ data.docno }}</p>
           </div>
         </div>
       </div>
