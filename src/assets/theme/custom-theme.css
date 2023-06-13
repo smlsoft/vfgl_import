@@ -1,0 +1,63 @@
+:root {
+--primary :#dc3545
+
+}
+
+.p-button.p-button-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    box-shadow: none;  
+}
+.p-button{
+  size: 25rem;
+}
+.p-button.p-button-info:hover {
+    color: #fff;
+    background-color: #138496;
+    border-color: #117a8b;
+  }
+  .text-danger {
+    color:  #dc3545;
+    
+
+}
+
+.p-button.p-button-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    box-shadow: none;
+}
+
+.p-button.p-button-danger:hover
+ {
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+.p-button.p-button-primary
+,
+.p-button.p-datepicker-trigger {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0069d9;
+  }
+  .p-button.p-button-primary:hover
+  ,
+.p-button.p-datepicker-trigger:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0069d9;
+  }
+  .p-button.p-button-succes {
+    color: #fff;
+    background-color: #28a745;
+    border-color:#28a745;
+  }
+  .p-button.p-button-succes:hover {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+ 

@@ -1,0 +1,201 @@
+<script setup>
+import { defineComponent } from "@vue/runtime-core";
+import { RouterLink } from "vue-router";
+import { menus } from "@/api/menu";
+import { useApp } from "@/stores/app.js";
+import { ref, onMounted } from "vue";
+const shopname = ref("");
+const storeApp = useApp();
+const isSidebarOpen = ref(false);
+onMounted(() => {
+  //console.log(window.innerWidth);
+  console.log(localStorage.shop_name);
+  shopname.value = localStorage.shop_name;
+
+  console.log(shopname);
+  if (window.innerWidth <= 1200) {
+    storeApp.showToggle = false;
+  }
+});
+function toggle() {
+  console.log(storeApp.setToggle);
+}
+
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value;
+}
+</script>
+<template>
+  <div class="wrapper" @mouseover="storeApp.setActivedToggle(true)">
+    <aside :vue:is-open="isSidebarOpen">
+      <ul class="sidebar-head">
+        <li>
+          <img src="@/assets/logo.png" alt="logo" width="32" height="32" />
+        </li>
+        <li>
+          <button
+            class="sidebar-toggle"
+            :class="isSidebarOpen ? 'toggle-button' : ''"
+          >
+            <IconAngle @click="toggleSidebar" />
+          </button>
+        </li>
+      </ul>
+
+      <h4 :transparent="!isSidebarOpen">Menu</h4>
+
+      <ul>
+        <li>
+          <router-link to="/">
+            <IconHome />
+            <Transition name="fade">
+              <span v-show="isSidebarOpen">Home</span>
+            </Transition>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/about">
+            <IconExclamation />
+            <Transition name="fade">
+              <span v-show="isSidebarOpen">About</span>
+            </Transition>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/team">
+            <IconEmployeeGroup />
+            <Transition name="fade">
+              <span v-show="isSidebarOpen">Team</span>
+            </Transition>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/contact">
+            <IconEmail />
+            <Transition name="fade">
+              <span v-show="isSidebarOpen">Contact</span>
+            </Transition>
+          </router-link>
+        </li>
+      </ul>
+    </aside>
+  </div>
+</template>
+
+<style lang="scss">
+@import "../assets/styles/app/layout.scss";
+
+$sidebar-width: 4rem;
+$toggle-duration: 300ms;
+$sidebar-padding-inline-start: 1rem;
+
+aside {
+  background: darkblue;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-block: 1rem;
+  transition: all $toggle-duration;
+  width: $sidebar-width;
+}
+
+aside[vue\:is-open="true"] {
+  width: 3 * $sidebar-width;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-block-end: 1rem;
+}
+
+img {
+  object-fit: contain;
+}
+
+li {
+  min-width: fit-content;
+  cursor: pointer;
+  padding-inline-start: $sidebar-padding-inline-start;
+
+  &:hover {
+    color: darkgoldenrod;
+  }
+
+  & a {
+    // border-right: 0.25rem solid white;
+    display: flex;
+    align-items: center;
+    column-gap: 0.75rem;
+    position: relative;
+    padding-block: 0.5rem;
+  }
+
+  a.router-link-exact-active::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    width: 0.25rem;
+    height: 100%;
+  }
+}
+.sidebar-head {
+  position: relative;
+  // padding-block-end: 4rem;
+}
+
+.sidebar-toggle {
+  padding-inline-start: $sidebar-padding-inline-start;
+}
+
+h4 {
+  padding-block-end: 1rem;
+  padding-inline-start: $sidebar-padding-inline-start;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.5;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.125ch;
+  transition: opacity $toggle-duration;
+}
+
+h4[transparent="true"] {
+  opacity: 0;
+}
+
+button {
+  cursor: pointer;
+  position: absolute;
+  transition-duration: $toggle-duration;
+  transition-property: transform, left, top;
+  left: 0;
+  top: 1rem;
+  transform: translateX(0%) translateY(2rem) rotateZ(0deg);
+
+  &.toggle-button {
+    left: 100%;
+    top: 0;
+    transform: translateX(-100%) translateY(0rem) rotateZ(180deg);
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-property: opacity, transform;
+  transition-duration: $toggle-duration;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+</style>
+
+<!-- <template>
+  <div class="bg-gray-900 h-screen lg:block flex-shrink-0 static left-0 top-0 z-1 border-gray-800 select-none">
+   
+  </div>
+</template> -->
