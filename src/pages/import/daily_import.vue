@@ -52,7 +52,7 @@ async function confirmSave() {
       shopid: ele.import_daily.shopid.toString(),
       accountdescription: ele.import_daily.accountdescription,
       accountgroup: ele.import_daily.accountgroup.toString(),
-      accountperiod: ele.import_daily.accountperiod,
+      accountperiod: parseInt(ele.import_daily.accountperiod),
       accountyear: ele.import_daily.accountyear,
       journaltype: parseInt(ele.import_daily.journaltype),
       amount: sumDebit,
