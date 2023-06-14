@@ -21,37 +21,37 @@ export const useAuthen = defineStore("authen", {
 
       //console.log("Login : ", username, password)
 
-      // await AuthService.login(username, password)
-      //   .then((response) => {
-      //     let respData = response.data;
-      //     // console.log(respData);
-      //     if (respData.success && respData.token != "") {
-      //       this.loginSuccess = true;
-      //       localStorage._token = respData.token;
-      //       localStorage._usercode = username;
-      //       //commit("SET_TOKEN", { token: respData.token, userCode: username });
-      //       this.token = respData.token;
-      //       this.userCode = username;
-      //     } else {
-      //       this.loginSuccess = false;
-      //       this.loginErrorMsg = "Username or password is wrong !";
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     this.loginSuccess = false;
-      //     this.loginErrorMsg = err;
-      //   });
+      await AuthService.login(username, password)
+        .then((response) => {
+          let respData = response.data;
+          // console.log(respData);
+          if (respData.success && respData.token != "") {
+            this.loginSuccess = true;
+            localStorage._token = respData.token;
+            localStorage._usercode = username;
+            //commit("SET_TOKEN", { token: respData.token, userCode: username });
+            this.token = respData.token;
+            this.userCode = username;
+          } else {
+            this.loginSuccess = false;
+            this.loginErrorMsg = "Username or password is wrong !";
+          }
+        })
+        .catch((err) => {
+          this.loginSuccess = false;
+          this.loginErrorMsg = err;
+        });
 
-      if (username == "superadmin" && password == "sml") {
-        this.loginSuccess = true;
-        localStorage._token = "351358413846846564456ASFASF6544";
-        localStorage._usercode = "SUPERADMIN";
-        this.token = "351358413846846564456ASFASF6544";
-        this.userCode = "SUPERADMIN";
-      } else {
-        this.loginSuccess = false;
-        this.loginErrorMsg = "Username or password is wrong !";
-      }
+      // if (username == "superadmin" && password == "sml") {
+      //   this.loginSuccess = true;
+      //   localStorage._token = "351358413846846564456ASFASF6544";
+      //   localStorage._usercode = "SUPERADMIN";
+      //   this.token = "351358413846846564456ASFASF6544";
+      //   this.userCode = "SUPERADMIN";
+      // } else {
+      //   this.loginSuccess = false;
+      //   this.loginErrorMsg = "Username or password is wrong !";
+      // }
 
       // load permission
       // if (loginSuccess) {

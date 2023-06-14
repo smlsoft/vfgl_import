@@ -27,32 +27,32 @@ async function handleLogin() {
   //console.log("Can Login ", store.loginSuccess);
 
   if (store.loginSuccess) {
-    localStorage.shopid = "";
+    localStorage.shopid = '999999999';
     localStorage.branchcode = "";
     localStorage.address = "";
     localStorage.telephone = "";
     localStorage.shop_name = "";
     localStorage.shop_role = "";
-    setTimeout(async () => {
-      router.push({ name: "dashboard" });
-    }, 1000);
+    selectShop();
   } else {
     loginFailed.value = true;
   }
   loading.value = false;
 }
 
-function selectShop(item) {
+function selectShop() {
   AuthenService.selectShop().then((res) => {
     if (res.success) {
       // this.showSnackBar("เข้าสู่ระบบสำเร็จ", "success");
       AuthenService.getShop(localStorage.shopid).then((res) => {
         localStorage.address = res.data.address;
         localStorage.telephone = res.data.telephone;
-        setTimeout(async () => {
-          router.push({ name: "dashboard" });
-        }, 1000);
+      setTimeout(async () => {
+            router.push({ name: "dashboard" });
+          }, 1000);
       });
+
+   
     } else {
       // this.showSnackBar(
       //   " ไม่สามารถเชื่อมต่อได้ เนื่องจากฐานข้อมูลมีปัญหา",
