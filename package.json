@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "dev:local": "vite --mode local",
+    "dev:localdev": "vite --mode localdev",
     "dev:staging": "vite --mode staging",
     "dev:prod": "vite --mode production",
     "build:dev": "vite build --mode development",
     "build:staging": "vite build --mode staging",
     "build:loser": "vite build --mode loser",
+    "build:localdev": "vite build --mode localdev",
     "build": "vite build",
     "preview": "vite preview --port 5050 --host 0.0.0.0",
     "test": "vitest"
