@@ -27,4 +27,18 @@ export const menus = [
     name: "shopimport",
     children: [],
   },
+  {
+    title: "list_shop_all",
+    icon: "pi pi-database",
+    to: "/shop_all/list",
+    name: "shop_all_list",
+    children: [],
+  },
+  {
+    title: "list_user_all",
+    icon: "pi pi-users",
+    to: "/user_all/list",
+    name: "user_all_list",
+    children: [],
+  },
 ];

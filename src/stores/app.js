@@ -14,7 +14,7 @@ export const useApp = defineStore("app", {
       document.title = title + " - " + process.env.VUE_APP_TITLE;
     },
     async setActivePage(page) {
-      console.log(page);
+      // console.log(page);
       this.pageActive = page;
     },
     async setActiveChild(page) {

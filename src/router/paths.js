@@ -397,4 +397,20 @@ export default [
     },
     component: () => import("../pages/period/account_period_list.vue"),
   },
+  {
+    path: "/shop_all/list",
+    name: "shop_all_list",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/shop_all/list.vue"),
+  },
+  {
+    path: "/user_all/list",
+    name: "user_all_list",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/user_all/list.vue"),
+  },
 ];
