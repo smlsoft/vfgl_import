@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vfadmin-uat
+  namespace: dedepos-prd
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80    
+  selector:
+    app: vfadmin-uat

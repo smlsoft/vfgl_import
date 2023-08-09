@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vfadmin-uat
+  namespace: dedepos-prd
+  labels:
+    app: vfadmin-uat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vfadmin-uat
+  template:
+    metadata:
+      labels:
+        app: vfadmin-uat
+    spec:
+      imagePullSecrets:
+        - name: dockerconfigjson-github-com
+      containers:
+      - name: vfadmin-uat
+        image: ghcr.io/smlsoft/vfadmin:sha-a5e3dbb
+        resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m" 
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          name: web-port
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health/liveness
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health/liveness
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
