@@ -26,12 +26,14 @@ export default {
     postGLJournal(data) {
         return instanceApi(true).post(`/gl/journal`, data).then(res => res.data);
     },
-
+    getShopData(data) {
+        return instanceApi(true).get(`/systemadm/shopadmin/getshopbybranchcode?branchcode=${data}`).then(res => res.data);
+    },
     ImportGLJournal(data) {
-        return instanceApi(true).post(`/migrationtools/journalimport`, data).then(res => res.data);
+        return instanceApi(true).post(`/systemadm/migrationtools/journalimport`, data).then(res => res.data);
     },
     ImportShop(data) {
-        return instanceApi(true).post(`/migrationtools/shopimport`, data).then(res => res.data);
+        return instanceApi(true).post(`/systemadm/migrationtools/shopimport`, data).then(res => res.data);
     },
     getGLJournalList(limitPage, page, search, sortField, sortOrder) {
         //console.log('Page' + page);

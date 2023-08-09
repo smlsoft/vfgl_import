@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "vfimporter"
-  }
+  },
+  "targets": {
+    "vfimporter": {
+      "hosting": {
+        "dev-vfimporter": [
+          "dev-vfimporter"
+        ],
+        "vfimporter": [
+          "vfimporter"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
