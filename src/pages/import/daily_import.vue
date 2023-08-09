@@ -50,6 +50,7 @@ async function confirmSave() {
 
     var from_input = {
       shopid: ele.import_daily.shopid.toString(),
+      branchcode: ele.import_daily.branchcode.toString(),
       accountdescription: ele.import_daily.accountdescription,
       accountgroup: ele.import_daily.accountgroup.toString(),
       accountperiod: parseInt(ele.import_daily.accountperiod),
@@ -136,6 +137,7 @@ function ImportFile() {
 
       var import_daily_json = {
         shopid: "",
+        branchcode: "",
         accountdescription: "",
         accountgroup: "",
         accountperiod: "",
@@ -203,7 +205,7 @@ function ImportFile() {
         // console.log("key " + key);
         // console.log("value " + value);
         if (key.toLowerCase() == "villageprojectno") {
-          import_daily_json.shopid = value;
+          import_daily_json.branchcode = value;
         }
         if (key.toLowerCase() == "accountgroups_code") {
           import_daily_json.accountgroup = value;
@@ -219,8 +221,7 @@ function ImportFile() {
         }
         if (key.toLowerCase() == "date") {
           var datesplit = value.split("/");
-          import_daily_json.docdate =
-            datesplit[2] + "-" + datesplit[1] + "-" + datesplit[0];
+          import_daily_json.docdate = datesplit[2] + "-" + datesplit[1] + "-" + datesplit[0];
         }
         if (key.toLowerCase() == "journalbooks_code") {
           import_daily_json.bookcode = value;
@@ -230,16 +231,10 @@ function ImportFile() {
           var accountdetail = [];
           accountdetail = Utils.selectAccount(key.split("C_")[1]);
 
-          journal_head.push(
-            accountdetail.length > 0 ? accountdetail[0].accountcode : key
-          );
+          journal_head.push(accountdetail.length > 0 ? accountdetail[0].accountcode : key);
           journal.push({
-            accountcode:
-              accountdetail.length > 0 ? accountdetail[0].accountcode : key,
-            accountname:
-              accountdetail.length > 0
-                ? accountdetail[0].accountname
-                : key.split("C_")[1],
+            accountcode: accountdetail.length > 0 ? accountdetail[0].accountcode : key,
+            accountname: accountdetail.length > 0 ? accountdetail[0].accountname : key.split("C_")[1],
             debitamount: 0,
             creditamount: value,
           });
@@ -249,16 +244,10 @@ function ImportFile() {
           var accountdetail = [];
           accountdetail = Utils.selectAccount(key.split("D_")[1]);
 
-          journal_head.push(
-            accountdetail.length > 0 ? accountdetail[0].accountcode : key
-          );
+          journal_head.push(accountdetail.length > 0 ? accountdetail[0].accountcode : key);
           journal.push({
-            accountcode:
-              accountdetail.length > 0 ? accountdetail[0].accountcode : key,
-            accountname:
-              accountdetail.length > 0
-                ? accountdetail[0].accountname
-                : key.split("D_")[1],
+            accountcode: accountdetail.length > 0 ? accountdetail[0].accountcode : key,
+            accountname: accountdetail.length > 0 ? accountdetail[0].accountname : key.split("D_")[1],
             debitamount: value,
             creditamount: 0,
           });
@@ -358,24 +347,17 @@ function ImportFile() {
       console.log(import_daily_json.journaldetail);
 
       import_daily_json.journaldetail.forEach((ele) => {
-        if (
-          ele.accountcode.search("D_") == 0 ||
-          ele.accountcode.search("C_") == 0 ||
-          ele.accountcode == ""
-        ) {
-        
+        if (ele.accountcode.search("D_") == 0 || ele.accountcode.search("C_") == 0 || ele.accountcode == "") {
           if (ele.accountname.search("_") > -1) {
             error_msg.push({
               name: "รายการบัญชีซ้ำ " + ele.accountname.replace("_", ""),
-              docno: import_daily_json.shopid,
+              docno: import_daily_json.branchcode,
               tab: 1,
             });
           } else {
             error_msg.push({
-              name:
-                "ไม่พบรายละเอียดรายการบัญชี " +
-                ele.accountname,
-              docno: import_daily_json.shopid,
+              name: "ไม่พบรายละเอียดรายการบัญชี " + ele.accountname,
+              docno: import_daily_json.branchcode,
               tab: 1,
             });
           }
@@ -494,35 +476,19 @@ function ImportFile() {
           });
         }
 
-        if (
-          import_taxs_json.details[0].description != "" &&
-          import_taxs_json.details[0].description != undefined
-        ) {
-          if (
-            import_taxs_json.details[0].taxamount == "" ||
-            import_taxs_json.details[0].taxamount == undefined
-          ) {
+        if (import_taxs_json.details[0].description != "" && import_taxs_json.details[0].description != undefined) {
+          if (import_taxs_json.details[0].taxamount == "" || import_taxs_json.details[0].taxamount == undefined) {
             import_taxs_json.details[0].taxamount = 0;
           }
         }
 
-        if (
-          import_taxs_json.details[1].description != "" &&
-          import_taxs_json.details[1].description != undefined
-        ) {
-          if (
-            import_taxs_json.details[1].taxamount == "" ||
-            import_taxs_json.details[1].taxamount == undefined
-          ) {
+        if (import_taxs_json.details[1].description != "" && import_taxs_json.details[1].description != undefined) {
+          if (import_taxs_json.details[1].taxamount == "" || import_taxs_json.details[1].taxamount == undefined) {
             import_taxs_json.details[1].taxamount = 0;
           }
         }
 
-        if (
-          parseFloat(import_taxs_json.details[0].taxamount) +
-            parseFloat(import_taxs_json.details[1].taxamount) !=
-          parseFloat(import_taxs_json.taxamount)
-        ) {
+        if (parseFloat(import_taxs_json.details[0].taxamount) + parseFloat(import_taxs_json.details[1].taxamount) != parseFloat(import_taxs_json.taxamount)) {
           error_msg.push({
             name: "ยอดรวมภาษีหัก ณ ที่จ่าย ไม่สัมพันธ์กัน",
             docno: import_taxs_json.taxdocno,
@@ -554,6 +520,8 @@ function ImportFile() {
       if (error_message.value.length == 0) {
         error_message.value = [];
         import_form.value = details;
+
+        getShopData();
         //  console.log(import_form.value);
       }
       is_loading.value = false;
@@ -565,6 +533,23 @@ function ImportFile() {
     is_loading.value = false;
     // console.log(e);
   };
+}
+
+function getShopData() {
+  console.log(import_form.value);
+  import_form.value.forEach((ele) => {
+    console.log(ele.import_daily.branchcode);
+    MasterdataService.getShopData(ele.import_daily.branchcode)
+      .then((res) => {
+        console.log(res);
+        if (res.data.guidfixed != undefined && res.data.guidfixed != '') {
+          ele.import_daily.shopid = res.data.guidfixed
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 }
 
 function remove_duplicates(arr) {
@@ -620,13 +605,7 @@ function onClose() {
             </FileUpload>
           </div>
           <div class="flex ml-2">
-            <Button
-              v-if="import_form.length > 0 && error_message.length == 0"
-              @click="onSave"
-              label="บันทึกรายวัน"
-              icon="pi pi-save"
-              class="w-auto p-button-succes p-button-sm"
-            ></Button>
+            <Button v-if="import_form.length > 0 && error_message.length == 0" @click="onSave" label="บันทึกรายวัน" icon="pi pi-save" class="w-auto p-button-succes p-button-sm"></Button>
           </div>
         </div>
         <div class="py-0 flex" v-if="import_form.length > 0">
@@ -637,35 +616,14 @@ function onClose() {
         <div class="surface-card p-4 shadow-2 border-round p-fluid my-2">
           <div v-if="is_loading">กำลังประมวลผล....</div>
           <div v-if="import_form.length > 0">
-            <DataTable
-              :value="import_form"
-              class="editable-cells-table"
-              responsiveLayout="scroll"
-            >
-              <Column
-                field="import_daily.shopid"
-                header="villageprojectno"
-              ></Column>
+            <DataTable :value="import_form" class="editable-cells-table" responsiveLayout="scroll">
+              <Column field="import_daily.branchcode" header="villageprojectno"></Column>
               <Column field="import_daily.docdate" header="date"> </Column>
-              <Column
-                field="import_daily.accountgroup"
-                header="accountgroups_code"
-              >
-              </Column>
-              <Column field="import_daily.bookcode" header="journalbooks_code">
-              </Column>
-              <Column
-                field="import_daily.accountperiod"
-                header="account_period"
-              >
-              </Column>
-              <Column field="import_daily.accountyear" header="account_year">
-              </Column>
-              <Column
-                field="import_daily.accountdescription"
-                header="description"
-              >
-              </Column>
+              <Column field="import_daily.accountgroup" header="accountgroups_code"> </Column>
+              <Column field="import_daily.bookcode" header="journalbooks_code"> </Column>
+              <Column field="import_daily.accountperiod" header="account_period"> </Column>
+              <Column field="import_daily.accountyear" header="account_year"> </Column>
+              <Column field="import_daily.accountdescription" header="description"> </Column>
               <Column field="import_daily" header="debit">
                 <template #body="{ data, field }">
                   {{ Utils.formatCurrency(data[field]["sumdebitamount"]) }}
@@ -680,22 +638,14 @@ function onClose() {
           </div>
         </div>
 
-        <div
-          class="surface-card p-4 shadow-2 border-round p-fluid my-2"
-          v-if="error_message.length > 0"
-        >
+        <div class="surface-card p-4 shadow-2 border-round p-fluid my-2" v-if="error_message.length > 0">
           <h3>ไม่สามารถทำรายการได้ กรุณาตรวจสอบข้อมูล</h3>
           <div v-for="(data, index) in error_message" :key="index">
             <p>{{ data.name }} villageprojectno : {{ data.docno }}</p>
           </div>
         </div>
       </div>
-      <DialogForm
-        :confirmDialog="confirmSaveDialog"
-        :textContent="textContent"
-        v-on:close="onClose"
-        v-on:confirm="confirmSave"
-      ></DialogForm>
+      <DialogForm :confirmDialog="confirmSaveDialog" :textContent="textContent" v-on:close="onClose" v-on:confirm="confirmSave"></DialogForm>
       <!-- <Dialog v-model:visible="confirmSaveDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
         <div class="confirmation-content">
           <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />

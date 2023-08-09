@@ -19,11 +19,6 @@ export default [
     component: () => import("../pages/Dashboard.vue"),
   },
   {
-    path: "/about",
-    name: "about",
-    component: () => import("../views/AboutView.vue"),
-  },
-  {
     path: "/login",
     name: "login",
     meta: {
@@ -31,15 +26,6 @@ export default [
       guest: true,
     },
     component: () => import("../pages/Login.vue"),
-  },
-  {
-    path: "/register",
-    name: "register",
-    meta: {
-      forwordauth: true,
-      guest: true,
-    },
-    component: () => import("../pages/Register.vue"),
   },
   {
     path: "/me",
@@ -54,136 +40,6 @@ export default [
     name: "logout",
     component: () => import("../pages/Logout.vue"),
   },
-  {
-    path: "/report/trialbalance",
-    name: "trialbalance",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/report/trial_balance.vue"),
-  },
-  {
-    path: "/report/dailyreport",
-    name: "daily_report",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/report/daily_report.vue"),
-  },
-  {
-    path: "/report/ledger",
-    name: "ledger",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/report/ledger.vue"),
-  },
-  {
-    path: "/report/work_sheet",
-    name: "work_sheet",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/report/work_sheet.vue"),
-  },
-
-  {
-    path: "/report/chartreport",
-    name: "chart_report",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/report/chart_report.vue"),
-  },
-  {
-    path: "/report/balancesheet",
-    name: "balance_sheet",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/report/balance_sheet.vue"),
-  },
-  {
-    path: "/report/profitandloss",
-    name: "profitandloss",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/report/profit_and_loss.vue"),
-  },
-  {
-    path: "/chart/list",
-    name: "chartList",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/chart/chart_list.vue"),
-  },
-  {
-    path: "/chart/import",
-    name: "importchart",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/chart/chart_import.vue"),
-  },
-  {
-    path: "/chart/create",
-    name: "chartCreate",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/chart/chart_create.vue"),
-  },
-  {
-    path: "/chart/edit/:id",
-    name: "chartEdit",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/chart/chart_edit.vue"),
-  },
-  {
-    path: "/daily/list",
-    name: "dailyList",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/daily/daily_list.vue"),
-  },
-  {
-    path: "/daily/images_show",
-    name: "daily_images_show",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/daily/daily_images_show.vue"),
-  },
-  {
-    path: "/daily/images_form",
-    name: "daily_images_form",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/daily/daily_images_form.vue"),
-  },
-  {
-    path: "/daily/images_landing",
-    name: "daily_images_landing",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/daily/daily_images_landing.vue"),
-  },
-  {
-    path: "/daily/images_list",
-    name: "daily_images_list",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/daily/daily_images_list.vue"),
-  },
-
   {
     path: "/daily/import",
     name: "dailyImport",
@@ -201,79 +57,6 @@ export default [
     component: () => import("../pages/import/shop_import.vue"),
   },
 
-  {
-    path: "/daily/form",
-    name: "dailyForm",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/daily/daily_form.vue"),
-  },
-  {
-    path: "/daily/form/:id",
-    name: "dailyUpdate",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/daily/daily_form.vue"),
-  },
-  {
-
-    path: "/remaindoc/list",
-    name: "remaindocList",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/remaindoc/remaindoc_list.vue"),
-  },
-  {
-    path: "/remaindoc/form",
-    name: "remaindocForm",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/remaindoc/remaindoc_form.vue"),
-  },
-  {
-    path: "/remaindoc/detail/:id",
-    name: "remaindocDetail",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/remaindoc/remaindoc_detail.vue"),
-  },
-  {
-    path: "/images/gallery",
-    name: "image_gallery",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/images/images_gallery.vue"),
-  },
-  {
-    path: "/images/list",
-    name: "list_images",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/images/images_list.vue"),
-  },
-  {
-    path: "/images/list/:id",
-    name: "list_images_param",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/images/images_list.vue"),
-  },
-  {
-    path: "/images/detail/:id",
-    name: "imagesDetail",
-    meta: {
-      auth: true,
-    },
-    component: () => import("../pages/images/images_detail.vue"),
-  },
   {
     path: "/book/list",
     name: "bookList",
