@@ -1,4 +1,4 @@
-name: Build VFGL
+name: Build Docker Image
 
 on: [workflow_dispatch]
 env:
