@@ -121,7 +121,7 @@ function ImportFile() {
   var config = { raw: true, type: "string" };
   var reader = new FileReader();
   reader.readAsArrayBuffer(myFiles.value.files[0]);
-  reader.onload = function (e) {
+  reader.onload = async function (e) {
     var data = new Uint8Array(reader.result);
     var wb = XLSX.read(data, { type: "array" });
     var firstSheetName = wb.SheetNames[0];
@@ -133,7 +133,7 @@ function ImportFile() {
     var error_msg = [];
     var details = [];
     for (let index = 0; index < results.length; index++) {
-      console.log(results[index]);
+     // console.log(results[index]);
 
       var import_daily_json = {
         shopid: "",
@@ -201,7 +201,7 @@ function ImportFile() {
       var journal = [];
       var journal_head = [];
 
-      JSON.parse(JSON.stringify(results[index]), (key, value) => {
+      JSON.parse(JSON.stringify(results[index]), async (key, value) => {
         // console.log("key " + key);
         // console.log("value " + value);
         if (key.toLowerCase() == "villageprojectno") {
@@ -304,7 +304,7 @@ function ImportFile() {
         if (jr.debitamount.toString() != "") {
           debit = parseFloat(jr.debitamount);
           sum_Debit += parseFloat(debit);
-          console.log("debit " + parseFloat(jr.debitamount));
+         // console.log("debit " + parseFloat(jr.debitamount));
         }
       });
       sum_Credit = sum_Credit.toFixed(2);
@@ -312,6 +312,18 @@ function ImportFile() {
 
       import_daily_json.sumdebitamount = sum_Debit;
       import_daily_json.sumcreditamount = sum_Credit;
+      //console.log(import_daily_json.shopid);
+      var guid = await getShopData(import_daily_json.branchcode);
+      console.log(guid);
+      import_daily_json.shopid = guid;
+
+      if (import_daily_json.shopid == "") {
+        error_msg.push({
+          name: "ไม่พบรหัสกองทุน",
+          docno: import_daily_json.branchcode,
+          tab: 1,
+        });
+      }
 
       if (import_daily_json.docdate == "") {
         error_msg.push({
@@ -344,7 +356,7 @@ function ImportFile() {
         });
       }
 
-      console.log(import_daily_json.journaldetail);
+    //  console.log(import_daily_json.journaldetail);
 
       import_daily_json.journaldetail.forEach((ele) => {
         if (ele.accountcode.search("D_") == 0 || ele.accountcode.search("C_") == 0 || ele.accountcode == "") {
@@ -521,8 +533,7 @@ function ImportFile() {
         error_message.value = [];
         import_form.value = details;
 
-        getShopData();
-        //  console.log(import_form.value);
+         console.log(import_form.value);
       }
       is_loading.value = false;
     }, 500);
@@ -535,22 +546,39 @@ function ImportFile() {
   };
 }
 
-function getShopData() {
-  console.log(import_form.value);
-  import_form.value.forEach((ele) => {
-    console.log(ele.import_daily.branchcode);
-    MasterdataService.getShopData(ele.import_daily.branchcode)
-      .then((res) => {
-        console.log(res);
-        if (res.data.guidfixed != undefined && res.data.guidfixed != '') {
-          ele.import_daily.shopid = res.data.guidfixed
+async function getShopData(data) {
+  var guid = "";
+  await MasterdataService.getShopData(data)
+    .then((res) => {
+      console.log(res);
+      if (res.data != null && res.data != undefined) {
+        if (res.data.guidfixed != undefined && res.data.guidfixed != "") {
+          guid = res.data.guidfixed;
         }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return guid;
 }
+
+// function getShopData(data) {
+//   console.log(import_form.value);
+//   import_form.value.forEach((ele) => {
+//     console.log(ele.import_daily.branchcode);
+//     MasterdataService.getShopData(ele.import_daily.branchcode)
+//       .then((res) => {
+//         console.log(res);
+//         if (res.data.guidfixed != undefined && res.data.guidfixed != '') {
+//           ele.import_daily.shopid = res.data.guidfixed
+//         }
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   });
+// }
 
 function remove_duplicates(arr) {
   var obj = {};
