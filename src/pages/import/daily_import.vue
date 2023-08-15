@@ -133,7 +133,7 @@ function ImportFile() {
     var error_msg = [];
     var details = [];
     for (let index = 0; index < results.length; index++) {
-      console.log(results[index]);
+     // console.log(results[index]);
 
       var import_daily_json = {
         shopid: "",
@@ -314,7 +314,7 @@ function ImportFile() {
       import_daily_json.sumcreditamount = sum_Credit;
       //console.log(import_daily_json.shopid);
       var guid = await getShopData(import_daily_json.branchcode);
-      //console.log(guid);
+      console.log(guid);
       import_daily_json.shopid = guid;
 
       if (import_daily_json.shopid == "") {
@@ -533,7 +533,7 @@ function ImportFile() {
         error_message.value = [];
         import_form.value = details;
 
-        //  console.log(import_form.value);
+         console.log(import_form.value);
       }
       is_loading.value = false;
     }, 500);
