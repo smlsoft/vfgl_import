@@ -30,32 +30,57 @@ onMounted(() => {
 async function confirmSave() {
     console.log(import_form.value);
 
-    MasterdataService.ImportUpdateShop(import_form.value)
-        .then((res) => {
-            console.log(res);
-            if (res.success) {
-                toast.add({
-                    severity: "success",
-                    summary: "ทำรายการสำเร็จ",
-                    detail: "บันทึกรายการสำเร็จ",
-                    life: 3000,
-                });
-                setTimeout(() => {
-                    import_form.value = [];
-                    confirmSaveDialog.value = false;
-                }, 1500);
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            toast.add({
-                severity: "error",
-                summary: "ทำรายการล้มเหลว",
-                detail: "บันทึกรายการไม่สำเร็จ error : " + err,
-                life: 3000,
-            });
+    if (import_form.value.length === 0) {
+        toast.add({
+            severity: "warn",
+            summary: "ไม่มีข้อมูล",
+            detail: "กรุณาเพิ่มข้อมูลก่อนบันทึก",
+            life: 3000,
         });
+        return;
+    }
+
+    const promises = import_form.value.map((item) =>
+        MasterdataService.ImportUpdateShop(item).then((res) => ({
+            status: "fulfilled",
+            item,
+            response: res,
+        })).catch((err) => ({
+            status: "rejected",
+            item,
+            error: err,
+        }))
+    );
+    const results = await Promise.allSettled(promises);
+
+    const successes = results.filter((result) => result.value.status === "fulfilled" );
+    const failures = results.filter((result) => result.value.status === "rejected" );
+
+    if (successes.length > 0) {
+        toast.add({
+            severity: "success",
+            summary: "บันทึกข้อมูลสำเร็จ",
+            detail: `สำเร็จ ${successes.length} รายการ`,
+            life: 3000,
+        });
+    }
+    if (failures.length > 0) {
+        toast.add({
+            severity: "error",
+            summary: "เกิดข้อผิดพลาด",
+            detail: `ล้มเหลว ${failures.length} รายการ`,
+            life: 3000,
+        });
+        console.error("Failed items:", failures.map((f) => f.value?.item || f.item));
+    }
+
+
+    setTimeout(() => {
+        import_form.value = [];
+        confirmSaveDialog.value = false;
+    }, 1500);
 }
+
 
 async function onSave() {
 
