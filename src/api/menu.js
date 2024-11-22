@@ -27,6 +27,14 @@ export const menus = [
     name: "shopimport",
     children: [],
   },
+  {
+    title: "แก้ไขข้อมูลกองทุน",
+    icon: "pi pi-file",
+    to: "/updateshop/import",
+    name: "updateshopimport",
+    children: [],
+  },
+  
   // {
   //   title: "list_shop_all",
   //   icon: "pi pi-database",

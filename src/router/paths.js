@@ -56,7 +56,14 @@ export default [
     },
     component: () => import("../pages/import/shop_import.vue"),
   },
-
+  {
+    path: "/updateshop/import",
+    name: "updateshopImport",
+    meta: {
+      auth: true,
+    },
+    component: () => import("../pages/import/update_shop_import.vue"),
+  },
   {
     path: "/book/list",
     name: "bookList",
