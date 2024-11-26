@@ -36,7 +36,7 @@ export default {
         return instanceApi(true).post(`/systemadm/migrationtools/shopimport`, data).then(res => res.data);
     },
     ImportUpdateShop(data) {
-        return instanceApi(true).post(`/systemadm/shopadmin/updateshop`, data).then(res => res.data);
+        return instanceApi(true).post(`/systemadm/shopadmin/updateshopcheckaddress`, data).then(res => res.data);
     },
     getGLJournalList(limitPage, page, search, sortField, sortOrder) {
         //console.log('Page' + page);
